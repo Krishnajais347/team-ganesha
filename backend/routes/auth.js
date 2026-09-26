@@ -60,7 +60,37 @@ router.post('/register', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
   try {
-    const { email, password } = req.body
+    const { email, password, phone } = req.body
+
+    // HEATMAP DEMO MODE: Accept any phone with Team@123
+    if (phone && password === 'Team@123') {
+      const token = jwt.sign(
+        { userId: 'demo-' + Date.now(), role: 'admin' },
+        process.env.JWT_SECRET || 'default-secret-change-this',
+        { expiresIn: '24h' }
+      )
+
+      return res.json({
+        success: true,
+        user: {
+          id: 'demo-' + Date.now(),
+          name: 'Admin User',
+          phone: phone,
+          email: phone + '@kumbh.com',
+          role: 'admin',
+          avatar: `https://ui-avatars.com/api/?name=Admin&background=667eea&color=fff`
+        },
+        token
+      })
+    }
+
+    // Regular email login
+    if (!email) {
+      return res.status(401).json({ 
+        success: false, 
+        error: 'Invalid credentials' 
+      })
+    }
 
     // Find user
     const user = await User.findOne({ email })

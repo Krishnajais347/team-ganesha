@@ -8,10 +8,11 @@ import {
   Folder,
   Users,
   Zap,
-  Activity
+  Activity,
+  Map
 } from 'lucide-react'
 
-const MacOSDock = ({ currentView, setCurrentView }) => {
+const MacOSDock = ({ currentView, setCurrentView, onHeatmapClick }) => {
   const [hoveredIndex, setHoveredIndex] = useState(null)
   const dockRef = useRef(null)
 
@@ -20,6 +21,7 @@ const MacOSDock = ({ currentView, setCurrentView }) => {
     { id: 'analytics', icon: BarChart3, label: 'Analytics', color: 'purple' },
     { id: 'alerts', icon: Bell, label: 'Alerts', color: 'red' },
     { id: 'operations', icon: Activity, label: 'Operations', color: 'green' },
+    { id: 'heatmap', icon: Map, label: 'Live Heatmap', color: 'cyan' },
     { id: 'divider', isDivider: true },
     { id: 'files', icon: Folder, label: 'Files', color: 'yellow' },
     { id: 'team', icon: Users, label: 'Team', color: 'pink' },
@@ -38,7 +40,9 @@ const MacOSDock = ({ currentView, setCurrentView }) => {
 
   const handleItemClick = (itemId) => {
     if (itemId && !dockItems.find(i => i.id === itemId)?.isDivider) {
-      if (['dashboard', 'analytics', 'alerts', 'operations'].includes(itemId)) {
+      if (itemId === 'heatmap') {
+        if (onHeatmapClick) onHeatmapClick()
+      } else if (['dashboard', 'analytics', 'alerts', 'operations'].includes(itemId)) {
         setCurrentView(itemId)
       }
     }
@@ -102,6 +106,7 @@ const MacOSDock = ({ currentView, setCurrentView }) => {
                 ${item.color === 'purple' && 'bg-gradient-to-br from-purple-400 to-pink-500 hover:from-purple-500 hover:to-pink-600'}
                 ${item.color === 'red' && 'bg-gradient-to-br from-red-400 to-orange-500 hover:from-red-500 hover:to-orange-600'}
                 ${item.color === 'green' && 'bg-gradient-to-br from-green-400 to-emerald-500 hover:from-green-500 hover:to-emerald-600'}
+                ${item.color === 'cyan' && 'bg-gradient-to-br from-cyan-400 to-teal-500 hover:from-cyan-500 hover:to-teal-600'}
                 ${item.color === 'yellow' && 'bg-gradient-to-br from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600'}
                 ${item.color === 'pink' && 'bg-gradient-to-br from-pink-400 to-rose-500 hover:from-pink-500 hover:to-rose-600'}
                 ${item.color === 'orange' && 'bg-gradient-to-br from-orange-400 to-red-500 hover:from-orange-500 hover:to-red-600'}
