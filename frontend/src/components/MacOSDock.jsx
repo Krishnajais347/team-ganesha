@@ -55,7 +55,7 @@ const MacOSDock = ({ currentView, setCurrentView, onHeatmapClick }) => {
         initial={{ y: 100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ type: 'spring', stiffness: 200, damping: 20, delay: 0.5 }}
-        className="bg-gradient-to-r from-purple-100 via-pink-100 to-blue-100 backdrop-blur-2xl border-2 border-white/50 rounded-2xl shadow-2xl px-4 py-3 flex items-end gap-2"
+        className="bg-white/80 backdrop-blur-2xl border border-slate-200/90 rounded-3xl shadow-2xl shadow-slate-300/40 px-4 py-3 flex items-end gap-2"
         onMouseLeave={() => setHoveredIndex(null)}
       >
         {dockItems.map((item, index) => {

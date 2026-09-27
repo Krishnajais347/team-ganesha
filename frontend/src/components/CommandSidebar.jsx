@@ -28,18 +28,18 @@ const CommandSidebar = ({ currentView, setCurrentView, collapsed, setCollapsed }
       initial={{ x: -100 }}
       animate={{ width: collapsed ? 80 : 240, x: 0 }}
       transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-      className="h-full bg-slate-900 border-r border-slate-800 flex flex-col relative z-50"
+      className="h-full bg-white border-r border-slate-200 flex flex-col relative z-30 shadow-xs"
     >
       {/* Logo / Title */}
-      <div className="h-16 border-b border-slate-800 flex items-center justify-center px-4">
+      <div className="h-16 border-b border-slate-200 flex items-center justify-center px-4 bg-slate-50/50">
         {!collapsed ? (
           <div className="text-center">
-            <h1 className="text-cyan-400 font-bold text-lg tracking-wider">KUMBH</h1>
-            <p className="text-slate-500 text-xs uppercase tracking-widest">Command Center</p>
+            <h1 className="text-cyan-700 font-extrabold text-lg tracking-wider">KUMBH</h1>
+            <p className="text-slate-400 text-xs uppercase tracking-widest font-semibold">Command Center</p>
           </div>
         ) : (
-          <div className="w-8 h-8 rounded-lg bg-cyan-500/20 border border-cyan-500 flex items-center justify-center">
-            <span className="text-cyan-400 font-bold text-sm">K</span>
+          <div className="w-9 h-9 rounded-xl bg-cyan-50 border border-cyan-200 flex items-center justify-center shadow-xs">
+            <span className="text-cyan-700 font-bold text-sm">K</span>
           </div>
         )}
       </div>
@@ -55,22 +55,24 @@ const CommandSidebar = ({ currentView, setCurrentView, collapsed, setCollapsed }
               key={item.id}
               onClick={() => setCurrentView(item.id)}
               whileHover={{ x: 4 }}
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.98 }}
               className={`
-                w-full flex items-center gap-4 px-4 py-3 mb-1
-                ${isActive ? 'bg-cyan-500/10 border-l-4 border-cyan-500' : 'border-l-4 border-transparent hover:bg-slate-800'}
+                w-full flex items-center gap-4 px-4 py-3 mb-1.5
+                ${isActive 
+                  ? 'bg-cyan-50/80 border-l-4 border-cyan-600 text-cyan-900 font-semibold shadow-xs' 
+                  : 'border-l-4 border-transparent text-slate-600 hover:bg-slate-100/70 hover:text-slate-900'}
                 transition-all group
               `}
             >
               <Icon className={`
                 w-5 h-5 transition-colors
-                ${isActive ? 'text-cyan-400' : 'text-slate-400 group-hover:text-slate-200'}
+                ${isActive ? 'text-cyan-600' : 'text-slate-400 group-hover:text-slate-700'}
               `} />
               
               {!collapsed && (
                 <span className={`
-                  text-sm font-medium transition-colors
-                  ${isActive ? 'text-cyan-300' : 'text-slate-400 group-hover:text-slate-200'}
+                  text-sm transition-colors
+                  ${isActive ? 'text-cyan-900 font-semibold' : 'text-slate-600 group-hover:text-slate-900 font-medium'}
                 `}>
                   {item.label}
                 </span>
@@ -79,7 +81,7 @@ const CommandSidebar = ({ currentView, setCurrentView, collapsed, setCollapsed }
               {!collapsed && isActive && (
                 <motion.div
                   layoutId="activeNav"
-                  className="ml-auto w-2 h-2 rounded-full bg-cyan-400"
+                  className="ml-auto w-2 h-2 rounded-full bg-cyan-600"
                 />
               )}
             </motion.button>
@@ -90,12 +92,12 @@ const CommandSidebar = ({ currentView, setCurrentView, collapsed, setCollapsed }
       {/* Collapse Toggle */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="h-12 border-t border-slate-800 flex items-center justify-center hover:bg-slate-800 transition-colors"
+        className="h-12 border-t border-slate-200 flex items-center justify-center hover:bg-slate-50 text-slate-400 hover:text-slate-700 transition-colors"
       >
         {collapsed ? (
-          <ChevronRight className="w-5 h-5 text-slate-400" />
+          <ChevronRight className="w-5 h-5" />
         ) : (
-          <ChevronLeft className="w-5 h-5 text-slate-400" />
+          <ChevronLeft className="w-5 h-5" />
         )}
       </button>
     </motion.div>

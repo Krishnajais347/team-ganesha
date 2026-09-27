@@ -45,11 +45,12 @@ export default function LoginPage({ onLogin }) {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center p-4">
-      {/* Background Effects */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"></div>
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-blue-50/70 flex items-center justify-center p-4 relative overflow-hidden">
+      {/* Background Soft Ambient Lights */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-cyan-200/40 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-200/30 rounded-full blur-3xl"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:24px_24px] opacity-40"></div>
       </div>
 
       {/* Login Card */}
@@ -59,19 +60,19 @@ export default function LoginPage({ onLogin }) {
         transition={{ duration: 0.5 }}
         className="relative z-10 w-full max-w-md"
       >
-        <div className="bg-white/5 backdrop-blur-2xl border border-white/10 rounded-3xl p-8 shadow-2xl">
+        <div className="bg-white/95 backdrop-blur-2xl border border-slate-200/90 rounded-3xl p-8 shadow-2xl shadow-slate-300/50">
           {/* Logo & Title */}
           <div className="text-center mb-8">
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.2, type: 'spring', stiffness: 200 }}
-              className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-cyan-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-cyan-500/30"
+              className="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-cyan-600 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg shadow-cyan-600/25"
             >
               <Shield className="w-10 h-10 text-white" />
             </motion.div>
-            <h1 className="text-3xl font-bold text-white mb-2">Kumbh Sava</h1>
-            <p className="text-gray-400">Super Admin Portal</p>
+            <h1 className="text-3xl font-extrabold text-slate-900 mb-1 tracking-tight">Kumbh Sava</h1>
+            <p className="text-slate-500 font-medium text-sm">Super Admin Command Center</p>
           </div>
 
           {/* Error Message */}
@@ -79,26 +80,26 @@ export default function LoginPage({ onLogin }) {
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="mb-6 p-4 bg-red-500/10 border border-red-500/20 rounded-lg flex items-center gap-3"
+              className="mb-6 p-4 bg-rose-50 border border-rose-200 rounded-xl flex items-center gap-3 text-rose-700"
             >
-              <AlertCircle className="w-5 h-5 text-red-400 flex-shrink-0" />
-              <p className="text-red-400 text-sm">{error}</p>
+              <AlertCircle className="w-5 h-5 text-rose-600 flex-shrink-0" />
+              <p className="text-sm font-semibold">{error}</p>
             </motion.div>
           )}
 
           {/* Login Form */}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {/* Phone Number */}
             <div>
-              <label className="block text-gray-300 mb-2 text-sm font-semibold flex items-center gap-2">
-                <Phone className="w-4 h-4" />
+              <label className="block text-slate-700 mb-2 text-sm font-semibold flex items-center gap-2">
+                <Phone className="w-4 h-4 text-cyan-600" />
                 Phone Number
               </label>
               <input
                 type="tel"
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:bg-white/10 transition-all"
+                className="w-full px-4 py-3 bg-slate-50/80 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-600 focus:bg-white focus:ring-4 focus:ring-cyan-50 transition-all font-medium"
                 placeholder="Enter your phone number"
                 required
                 maxLength="10"
@@ -107,8 +108,8 @@ export default function LoginPage({ onLogin }) {
 
             {/* Password */}
             <div>
-              <label className="block text-gray-300 mb-2 text-sm font-semibold flex items-center gap-2">
-                <Lock className="w-4 h-4" />
+              <label className="block text-slate-700 mb-2 text-sm font-semibold flex items-center gap-2">
+                <Lock className="w-4 h-4 text-cyan-600" />
                 Password
               </label>
               <div className="relative">
@@ -116,14 +117,14 @@ export default function LoginPage({ onLogin }) {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:bg-white/10 transition-all"
+                  className="w-full px-4 py-3 bg-slate-50/80 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-600 focus:bg-white focus:ring-4 focus:ring-cyan-50 transition-all font-medium"
                   placeholder="Enter your password"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors"
+                  className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 transition-colors"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -132,11 +133,11 @@ export default function LoginPage({ onLogin }) {
 
             {/* Submit Button */}
             <motion.button
-              whileHover={{ scale: 1.02 }}
+              whileHover={{ scale: 1.015 }}
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
-              className="w-full py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white rounded-lg font-semibold hover:from-cyan-600 hover:to-purple-700 transition-all shadow-lg shadow-cyan-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full py-3.5 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-xl font-bold hover:from-cyan-700 hover:to-blue-700 transition-all shadow-lg shadow-cyan-600/25 disabled:opacity-50 disabled:cursor-not-allowed text-base cursor-pointer"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
@@ -144,27 +145,29 @@ export default function LoginPage({ onLogin }) {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  Logging in...
+                  Authenticating...
                 </span>
               ) : (
-                'Login to Dashboard'
+                'Login to Command Center'
               )}
             </motion.button>
           </form>
 
           {/* Info */}
-          <div className="mt-6 pt-6 border-t border-white/10">
-            <p className="text-center text-gray-500 text-xs">
-              Authorized personnel only • Kumbh Mela 2026
+          <div className="mt-6 pt-5 border-t border-slate-100 text-center">
+            <p className="text-slate-400 text-xs font-medium">
+              Authorized personnel only • Kumbh Mela 2026 Telemetry Portal
             </p>
           </div>
         </div>
 
-        {/* Demo Credentials (remove in production) */}
-        <div className="mt-4 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-          <p className="text-yellow-400 text-xs font-semibold mb-2">Demo Credentials:</p>
-          <p className="text-yellow-300 text-xs">Phone: 2222222222</p>
-          <p className="text-yellow-300 text-xs">Password: Krishna@123</p>
+        {/* Demo Credentials */}
+        <div className="mt-4 p-4 bg-amber-50 border border-amber-200/80 rounded-2xl shadow-xs">
+          <p className="text-amber-800 text-xs font-bold mb-1 uppercase tracking-wider">Demo Credentials:</p>
+          <div className="flex items-center justify-between text-xs text-amber-900 font-mono">
+            <span>Phone: <strong>2222222222</strong></span>
+            <span>Pass: <strong>Krishna@123</strong></span>
+          </div>
         </div>
       </motion.div>
     </div>

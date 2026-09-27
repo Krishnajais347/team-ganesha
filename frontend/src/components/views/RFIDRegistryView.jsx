@@ -100,10 +100,10 @@ const generateRFIDFromZones = () => {
 
 const getStatusColor = (status) => {
   switch (status) {
-    case 'active': return 'text-green-400 bg-green-500/20';
-    case 'inactive': return 'text-gray-400 bg-gray-500/20';
-    case 'blocked': return 'text-red-400 bg-red-500/20';
-    default: return 'text-gray-400 bg-gray-500/20';
+    case 'active': return 'text-emerald-700 bg-emerald-50 border border-emerald-200';
+    case 'inactive': return 'text-slate-600 bg-slate-100 border border-slate-200';
+    case 'blocked': return 'text-rose-700 bg-rose-50 border border-rose-200';
+    default: return 'text-slate-600 bg-slate-100 border border-slate-200';
   }
 };
 
@@ -181,23 +181,25 @@ export default function RFIDRegistryView() {
   };
 
   return (
-    <div className="h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 p-6 overflow-auto">
+    <div className="p-6 space-y-6">
       {/* Header */}
-      <div className="mb-6">
+      <div>
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-4xl font-bold text-white mb-2 flex items-center gap-3">
-              <Radio className="w-10 h-10 text-cyan-400" />
-              RFID Registry
+            <h1 className="text-3xl font-extrabold text-slate-900 mb-1 flex items-center gap-3 tracking-tight">
+              <div className="p-2.5 rounded-xl bg-cyan-50 border border-cyan-100 text-cyan-600">
+                <Radio className="w-7 h-7" />
+              </div>
+              RFID Pilgrim Registry & Telemetry
             </h1>
-            <p className="text-gray-400">Live data from Heatmap zones • Updated in real-time</p>
+            <p className="text-slate-500 font-medium text-sm">Live telemetry scan checkpoints across all Ghats and Gates • Updated in real-time</p>
           </div>
           <div className="flex items-center gap-3">
-            <button className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg flex items-center gap-2 transition-all">
-              <Download className="w-4 h-4" />
-              Export Data
+            <button className="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold border border-slate-200 rounded-xl flex items-center gap-2 transition-all cursor-pointer">
+              <Download className="w-4 h-4 text-slate-600" />
+              Export Registry
             </button>
-            <button className="px-4 py-2 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg flex items-center gap-2 hover:from-cyan-600 hover:to-blue-600 transition-all">
+            <button className="px-5 py-2.5 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-xl font-bold flex items-center gap-2 hover:from-cyan-700 hover:to-blue-700 transition-all shadow-md shadow-cyan-600/20 cursor-pointer">
               <UserPlus className="w-4 h-4" />
               Register New RFID
             </button>
@@ -206,71 +208,75 @@ export default function RFIDRegistryView() {
       </div>
 
       {/* Tab Navigation */}
-      <div className="mb-6 flex gap-2">
+      <div className="flex gap-2">
         <button
           onClick={() => setActiveTab('rfid')}
-          className={`px-6 py-3 rounded-lg font-semibold transition-all flex items-center gap-2 ${
+          className={`px-5 py-2.5 rounded-xl font-bold transition-all flex items-center gap-2 cursor-pointer ${
             activeTab === 'rfid'
-              ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white'
-              : 'bg-white/5 text-gray-400 hover:bg-white/10'
+              ? 'bg-cyan-50 border border-cyan-200 text-cyan-800 shadow-2xs'
+              : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
           }`}
         >
-          <Radio className="w-5 h-5" />
+          <Radio className="w-4 h-4 text-cyan-600" />
           RFID Tracking
         </button>
         <button
           onClick={() => setActiveTab('users')}
-          className={`px-6 py-3 rounded-lg font-semibold transition-all flex items-center gap-2 ${
+          className={`px-5 py-2.5 rounded-xl font-bold transition-all flex items-center gap-2 cursor-pointer ${
             activeTab === 'users'
-              ? 'bg-gradient-to-r from-cyan-500 to-blue-500 text-white'
-              : 'bg-white/5 text-gray-400 hover:bg-white/10'
+              ? 'bg-cyan-50 border border-cyan-200 text-cyan-800 shadow-2xs'
+              : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
           }`}
         >
-          <User className="w-5 h-5" />
-          Registered Users
+          <User className="w-4 h-4 text-cyan-600" />
+          Registered Pilgrims
         </button>
       </div>
 
       {/* Stats Bar */}
-      <div className="grid grid-cols-4 gap-4 mb-6">
-        <div className="bg-white/5 backdrop-blur-xl border border-green-500/30 rounded-lg p-4">
-          <div className="text-xs text-gray-400 mb-1">Active RFIDs</div>
-          <div className="text-3xl font-bold text-green-400">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-emerald-500" />
+          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Active RFIDs</div>
+          <div className="text-3xl font-extrabold text-emerald-600 tracking-tight">
             {rfidList.filter(r => r.status === 'active').length}
           </div>
         </div>
-        <div className="bg-white/5 backdrop-blur-xl border border-gray-500/30 rounded-lg p-4">
-          <div className="text-xs text-gray-400 mb-1">Inactive RFIDs</div>
-          <div className="text-3xl font-bold text-gray-400">
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-slate-400" />
+          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Inactive RFIDs</div>
+          <div className="text-3xl font-extrabold text-slate-700 tracking-tight">
             {rfidList.filter(r => r.status === 'inactive').length}
           </div>
         </div>
-        <div className="bg-white/5 backdrop-blur-xl border border-red-500/30 rounded-lg p-4">
-          <div className="text-xs text-gray-400 mb-1">Blocked RFIDs</div>
-          <div className="text-3xl font-bold text-red-400">
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-rose-500" />
+          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Blocked RFIDs</div>
+          <div className="text-3xl font-extrabold text-rose-600 tracking-tight">
             {rfidList.filter(r => r.status === 'blocked').length}
           </div>
         </div>
-        <div className="bg-white/5 backdrop-blur-xl border border-yellow-500/30 rounded-lg p-4">
-          <div className="text-xs text-gray-400 mb-1">Flagged RFIDs</div>
-          <div className="text-3xl font-bold text-yellow-400">
+        <div className="bg-white border border-slate-200 rounded-2xl p-5 shadow-xs relative overflow-hidden">
+          <div className="absolute top-0 left-0 right-0 h-1 bg-amber-500" />
+          <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1">Flagged Suspicious</div>
+          <div className="text-3xl font-extrabold text-amber-600 tracking-tight">
             {rfidList.filter(r => r.flagged).length}
           </div>
         </div>
       </div>
 
       {/* Search and Filter Bar */}
-      <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-lg p-4 mb-6">
-        <div className="flex items-center gap-4">
+      <div className="bg-white border border-slate-200 rounded-2xl p-4 shadow-xs">
+        <div className="flex flex-wrap items-center gap-4">
           {/* Search */}
-          <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <div className="flex-1 relative min-w-[260px]">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by RFID UID or assignee name..."
-              className="w-full pl-12 pr-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500"
+              placeholder="Search by RFID UID or pilgrim name..."
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-cyan-600 focus:bg-white text-sm font-medium"
             />
           </div>
 
@@ -278,15 +284,15 @@ export default function RFIDRegistryView() {
           <div className="relative">
             <button
               onClick={() => setShowFilterMenu(!showFilterMenu)}
-              className="px-4 py-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-lg text-white flex items-center gap-2 transition-all"
+              className="px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-slate-800 text-sm font-semibold flex items-center gap-2 transition-all cursor-pointer"
             >
-              <Filter className="w-5 h-5" />
-              Filter: {statusFilter === 'all' ? 'All' : statusFilter}
-              <ChevronDown className="w-4 h-4" />
+              <Filter className="w-4 h-4 text-cyan-600" />
+              Filter: {statusFilter === 'all' ? 'All Status' : statusFilter}
+              <ChevronDown className="w-4 h-4 text-slate-400" />
             </button>
             
             {showFilterMenu && (
-              <div className="absolute right-0 mt-2 w-48 bg-gray-900 border border-white/20 rounded-lg shadow-2xl z-50">
+              <div className="absolute right-0 mt-2 w-48 bg-white border border-slate-200 rounded-xl shadow-xl z-50 py-1.5">
                 {['all', 'active', 'inactive', 'blocked'].map((status) => (
                   <button
                     key={status}
@@ -294,8 +300,8 @@ export default function RFIDRegistryView() {
                       setStatusFilter(status);
                       setShowFilterMenu(false);
                     }}
-                    className={`w-full px-4 py-2 text-left hover:bg-white/10 transition-colors capitalize ${
-                      statusFilter === status ? 'text-cyan-400 bg-white/5' : 'text-white'
+                    className={`w-full px-4 py-2 text-left hover:bg-slate-50 transition-colors capitalize text-sm font-semibold cursor-pointer ${
+                      statusFilter === status ? 'text-cyan-700 bg-cyan-50' : 'text-slate-800'
                     }`}
                   >
                     {status}
@@ -308,64 +314,64 @@ export default function RFIDRegistryView() {
           {/* Show/Hide UIDs */}
           <button
             onClick={() => setShowMasked(!showMasked)}
-            className="px-4 py-3 bg-white/10 hover:bg-white/20 border border-white/10 rounded-lg text-white flex items-center gap-2 transition-all"
+            className="px-4 py-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-xl text-slate-800 text-sm font-semibold flex items-center gap-2 transition-all cursor-pointer"
           >
-            {showMasked ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-            {showMasked ? 'Show' : 'Hide'} UIDs
+            {showMasked ? <EyeOff className="w-4 h-4 text-cyan-600" /> : <Eye className="w-4 h-4 text-cyan-600" />}
+            {showMasked ? 'Show' : 'Mask'} UIDs
           </button>
         </div>
       </div>
 
       {/* RFID Tracking Table */}
       {activeTab === 'rfid' && (
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-lg overflow-hidden">
+        <div className="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
           <table className="w-full">
-            <thead className="bg-white/5 border-b border-white/10">
+            <thead className="bg-slate-50/80 border-b border-slate-200">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">RFID UID</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">Status</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">Assigned To</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">Last Zone</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">Last Scan</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">Total Scans</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">Actions</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">RFID UID</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Assigned To</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Last Zone</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Last Scan</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Total Scans</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/10">
+            <tbody className="divide-y divide-slate-100">
               {filteredList.map((rfid) => (
                 <motion.tr
                   key={rfid.id}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="hover:bg-white/5 transition-all cursor-pointer"
+                  className="hover:bg-slate-50/80 transition-all cursor-pointer"
                   onClick={() => setSelectedRFID(rfid)}
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
-                      <code className="text-cyan-400 font-mono text-sm">
+                      <code className="text-cyan-700 font-mono font-bold text-sm">
                         {showMasked ? rfid.maskedUid : rfid.uid}
                       </code>
                       {rfid.flagged && (
-                        <AlertTriangle className="w-4 h-4 text-yellow-400" title={rfid.flagReason} />
+                        <AlertTriangle className="w-4 h-4 text-amber-500" title={rfid.flagReason} />
                       )}
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(rfid.status)}`}>
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${getStatusColor(rfid.status)}`}>
                       {rfid.status}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-white">{rfid.assignedTo}</td>
-                  <td className="px-6 py-4 text-gray-400">{rfid.lastZone}</td>
-                  <td className="px-6 py-4 text-gray-400 text-sm">{rfid.lastScan}</td>
-                  <td className="px-6 py-4 text-white font-semibold">{rfid.totalScans}</td>
+                  <td className="px-6 py-4 text-slate-900 font-bold">{rfid.assignedTo}</td>
+                  <td className="px-6 py-4 text-slate-600 font-medium">{rfid.lastZone}</td>
+                  <td className="px-6 py-4 text-slate-500 text-xs font-medium">{rfid.lastScan}</td>
+                  <td className="px-6 py-4 text-slate-900 font-extrabold">{rfid.totalScans}</td>
                   <td className="px-6 py-4">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         setSelectedRFID(rfid);
                       }}
-                      className="text-cyan-400 hover:text-cyan-300 transition-colors"
+                      className="text-cyan-600 hover:text-cyan-800 font-bold text-sm transition-colors cursor-pointer"
                     >
                       View Details →
                     </button>
@@ -377,8 +383,8 @@ export default function RFIDRegistryView() {
 
           {filteredList.length === 0 && (
             <div className="text-center py-12">
-              <Radio className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-400">No RFID records found</p>
+              <Radio className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+              <p className="text-slate-500 font-medium">No RFID records found</p>
             </div>
           )}
         </div>
@@ -386,75 +392,75 @@ export default function RFIDRegistryView() {
 
       {/* Registered Users Table */}
       {activeTab === 'users' && (
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-lg overflow-hidden">
+        <div className="bg-white border border-slate-200 rounded-2xl shadow-xs overflow-hidden">
           <table className="w-full">
-            <thead className="bg-white/5 border-b border-white/10">
+            <thead className="bg-slate-50/80 border-b border-slate-200">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">User Details</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">Contact</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">RFID UID</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">Status</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">Current Location</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">Registered</th>
-                <th className="px-6 py-4 text-left text-xs font-semibold text-gray-400 uppercase">Actions</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Pilgrim Details</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Contact</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">RFID UID</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Current Location</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Registered</th>
+                <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/10">
+            <tbody className="divide-y divide-slate-100">
               {filteredList.map((user) => (
                 <motion.tr
                   key={user.id}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="hover:bg-white/5 transition-all cursor-pointer"
+                  className="hover:bg-slate-50/80 transition-all cursor-pointer"
                   onClick={() => setSelectedUser(user)}
                 >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-white font-bold">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-600 to-blue-600 flex items-center justify-center text-white font-bold shadow-xs">
                         {user.assignedTo.charAt(0)}
                       </div>
                       <div>
-                        <div className="text-white font-semibold">{user.assignedTo}</div>
-                        <div className="text-xs text-gray-400">Age: {user.age}</div>
+                        <div className="text-slate-900 font-bold">{user.assignedTo}</div>
+                        <div className="text-xs text-slate-500 font-medium">Age: {user.age}</div>
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
                     <div className="text-sm">
-                      <div className="text-gray-300 flex items-center gap-2 mb-1">
-                        <Phone className="w-3 h-3" />
+                      <div className="text-slate-800 font-medium flex items-center gap-2 mb-0.5">
+                        <Phone className="w-3.5 h-3.5 text-cyan-600" />
                         {user.phoneNumber}
                       </div>
-                      <div className="text-gray-400 flex items-center gap-2 text-xs">
-                        <Mail className="w-3 h-3" />
+                      <div className="text-slate-500 flex items-center gap-2 text-xs">
+                        <Mail className="w-3.5 h-3.5 text-slate-400" />
                         {user.email}
                       </div>
                     </div>
                   </td>
                   <td className="px-6 py-4">
-                    <code className="text-cyan-400 font-mono text-sm">
+                    <code className="text-cyan-700 font-mono font-bold text-sm">
                       {showMasked ? user.maskedUid : user.uid}
                     </code>
                   </td>
                   <td className="px-6 py-4">
-                    <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(user.status)}`}>
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${getStatusColor(user.status)}`}>
                       {user.status}
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="flex items-center gap-2 text-gray-300">
-                      <MapPin className="w-4 h-4 text-cyan-400" />
+                    <div className="flex items-center gap-1.5 text-slate-700 font-medium text-sm">
+                      <MapPin className="w-4 h-4 text-cyan-600" />
                       {user.lastZone}
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-gray-400 text-sm">{user.registeredDate}</td>
+                  <td className="px-6 py-4 text-slate-500 text-xs font-medium">{user.registeredDate}</td>
                   <td className="px-6 py-4">
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         setSelectedUser(user);
                       }}
-                      className="text-cyan-400 hover:text-cyan-300 transition-colors"
+                      className="text-cyan-600 hover:text-cyan-800 font-bold text-sm transition-colors cursor-pointer"
                     >
                       View Profile →
                     </button>
@@ -466,225 +472,111 @@ export default function RFIDRegistryView() {
 
           {filteredList.length === 0 && (
             <div className="text-center py-12">
-              <User className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-              <p className="text-gray-400">No registered users found</p>
+              <User className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+              <p className="text-slate-500 font-medium">No registered pilgrims found</p>
             </div>
           )}
         </div>
       )}
 
-      {/* Details Modal */}
+      {/* RFID Details Modal */}
       <AnimatePresence>
         {selectedRFID && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
             onClick={() => setSelectedRFID(null)}
           >
             <motion.div
-              initial={{ scale: 0.9, y: 20 }}
+              initial={{ scale: 0.95, y: 20 }}
               animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
+              exit={{ scale: 0.95, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-gradient-to-br from-gray-900 to-black border border-white/10 rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
+              className="bg-white border border-slate-200 rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl text-slate-900"
             >
               {/* Modal Header */}
               <div className="flex items-start justify-between mb-6">
                 <div>
                   <div className="flex items-center gap-3 mb-2">
-                    <Radio className="w-8 h-8 text-cyan-400" />
-                    <h2 className="text-2xl font-bold text-white">
+                    <Radio className="w-8 h-8 text-cyan-600" />
+                    <h2 className="text-2xl font-bold text-slate-900">
                       {showMasked ? selectedRFID.maskedUid : selectedRFID.uid}
                     </h2>
                     {selectedRFID.flagged && (
-                      <span className="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full text-xs font-semibold flex items-center gap-1">
-                        <AlertTriangle className="w-3 h-3" />
+                      <span className="px-3 py-1 bg-amber-50 border border-amber-200 text-amber-700 rounded-full text-xs font-semibold flex items-center gap-1">
+                        <AlertTriangle className="w-3 h-3 text-amber-600" />
                         Flagged
                       </span>
                     )}
                   </div>
-                  <p className="text-gray-400">Registered: {selectedRFID.registeredDate}</p>
+                  <p className="text-slate-500 text-sm">Registered: {selectedRFID.registeredDate}</p>
                 </div>
                 <button
                   onClick={() => setSelectedRFID(null)}
-                  className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                  className="p-2 hover:bg-slate-100 rounded-lg transition-colors text-slate-400 hover:text-slate-600"
                 >
-                  <X className="w-5 h-5 text-gray-400" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
 
               {/* RFID Info Grid */}
               <div className="grid grid-cols-3 gap-4 mb-6">
-                <div className="bg-white/5 rounded-lg p-4">
-                  <div className="text-xs text-gray-400 mb-1">Status</div>
-                  <span className={`inline-block px-3 py-1 rounded-full text-sm font-semibold ${getStatusColor(selectedRFID.status)}`}>
+                <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4">
+                  <div className="text-xs text-slate-500 font-medium mb-1">Status</div>
+                  <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(selectedRFID.status)}`}>
                     {selectedRFID.status}
                   </span>
                 </div>
-                <div className="bg-white/5 rounded-lg p-4">
-                  <div className="text-xs text-gray-400 mb-1">Assigned To</div>
-                  <div className="text-white font-semibold">{selectedRFID.assignedTo}</div>
+                <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4">
+                  <div className="text-xs text-slate-500 font-medium mb-1">Assigned To</div>
+                  <div className="text-slate-900 font-semibold">{selectedRFID.assignedTo}</div>
                 </div>
-                <div className="bg-white/5 rounded-lg p-4">
-                  <div className="text-xs text-gray-400 mb-1">Total Scans</div>
-                  <div className="text-white font-semibold text-xl">{selectedRFID.totalScans}</div>
+                <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4">
+                  <div className="text-xs text-slate-500 font-medium mb-1">Total Scans</div>
+                  <div className="text-slate-900 font-bold text-xl">{selectedRFID.totalScans}</div>
                 </div>
               </div>
 
               {selectedRFID.flagged && (
-                <div className="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4 mb-6">
-                  <div className="flex items-center gap-2 text-yellow-400 font-semibold mb-2">
-                    <AlertTriangle className="w-5 h-5" />
+                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
+                  <div className="flex items-center gap-2 text-amber-800 font-semibold mb-2">
+                    <AlertTriangle className="w-5 h-5 text-amber-600" />
                     Flagged Reason
                   </div>
-                  <p className="text-yellow-300">{selectedRFID.flagReason}</p>
+                  <p className="text-amber-700 text-sm">{selectedRFID.flagReason}</p>
                 </div>
               )}
 
               {/* Scan History */}
-              <div className="bg-white/5 rounded-lg p-4 mb-6">
-                <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                  <Activity className="w-5 h-5 text-cyan-400" />
+              <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4 mb-6">
+                <h3 className="text-slate-900 font-semibold mb-4 flex items-center gap-2">
+                  <Activity className="w-5 h-5 text-cyan-600" />
                   Scan History & Movement Timeline
                 </h3>
                 <div className="space-y-3">
-                  {selectedRFID.scanHistory.map((scan, index) => (
+                  {selectedRFID.scanHistory?.map((scan, index) => (
                     <div
                       key={index}
-                      className={`flex items-center justify-between p-3 rounded-lg ${
-                        scan.flagged ? 'bg-red-500/10 border border-red-500/30' : 'bg-white/5'
+                      className={`flex items-center justify-between p-3 rounded-lg border ${
+                        scan.flagged
+                          ? 'bg-rose-50 border-rose-200 text-rose-800'
+                          : 'bg-white border-slate-200 text-slate-700'
                       }`}
                     >
                       <div className="flex items-center gap-3">
-                        <MapPin className={`w-5 h-5 ${scan.flagged ? 'text-red-400' : 'text-cyan-400'}`} />
-
-      {/* User Profile Modal */}
-      <AnimatePresence>
-        {selectedUser && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-            onClick={() => setSelectedUser(null)}
-          >
-            <motion.div
-              initial={{ scale: 0.9, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
-              onClick={(e) => e.stopPropagation()}
-              className="bg-gradient-to-br from-gray-900 to-black border border-white/10 rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl"
-            >
-              {/* User Profile Header */}
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-20 h-20 rounded-full bg-gradient-to-br from-cyan-500 to-blue-500 flex items-center justify-center text-white text-3xl font-bold">
-                    {selectedUser.assignedTo.charAt(0)}
-                  </div>
-                  <div>
-                    <h2 className="text-2xl font-bold text-white mb-1">{selectedUser.assignedTo}</h2>
-                    <p className="text-gray-400">Age: {selectedUser.age} • {selectedUser.address}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getStatusColor(selectedUser.status)}`}>
-                        {selectedUser.status}
-                      </span>
-                      {selectedUser.flagged && (
-                        <span className="px-3 py-1 bg-yellow-500/20 text-yellow-400 rounded-full text-xs font-semibold flex items-center gap-1">
-                          <AlertTriangle className="w-3 h-3" />
-                          Flagged
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setSelectedUser(null)}
-                  className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-                >
-                  <X className="w-5 h-5 text-gray-400" />
-                </button>
-              </div>
-
-              {/* User Information Grid */}
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-white/5 rounded-lg p-4">
-                  <div className="text-xs text-gray-400 mb-2 flex items-center gap-2">
-                    <Phone className="w-4 h-4" />
-                    Phone Number
-                  </div>
-                  <div className="text-white font-semibold">{selectedUser.phoneNumber}</div>
-                </div>
-                <div className="bg-white/5 rounded-lg p-4">
-                  <div className="text-xs text-gray-400 mb-2 flex items-center gap-2">
-                    <Mail className="w-4 h-4" />
-                    Email Address
-                  </div>
-                  <div className="text-white font-semibold text-sm">{selectedUser.email}</div>
-                </div>
-                <div className="bg-white/5 rounded-lg p-4">
-                  <div className="text-xs text-gray-400 mb-2 flex items-center gap-2">
-                    <Radio className="w-4 h-4" />
-                    RFID UID
-                  </div>
-                  <code className="text-cyan-400 font-mono text-sm">
-                    {showMasked ? selectedUser.maskedUid : selectedUser.uid}
-                  </code>
-                </div>
-                <div className="bg-white/5 rounded-lg p-4">
-                  <div className="text-xs text-gray-400 mb-2 flex items-center gap-2">
-                    <Calendar className="w-4 h-4" />
-                    Registered Date
-                  </div>
-                  <div className="text-white font-semibold">{selectedUser.registeredDate}</div>
-                </div>
-              </div>
-
-              {/* Current Location */}
-              <div className="bg-white/5 rounded-lg p-4 mb-6">
-                <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
-                  <MapPin className="w-5 h-5 text-cyan-400" />
-                  Current Location
-                </h3>
-                <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-                  <div>
-                    <div className="text-white font-semibold">{selectedUser.lastZone}</div>
-                    <div className="text-xs text-gray-400">Last scanned: {selectedUser.lastScan}</div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-gray-400 text-xs">Total Scans</div>
-                    <div className="text-white font-bold text-xl">{selectedUser.totalScans}</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Movement History */}
-              <div className="bg-white/5 rounded-lg p-4 mb-6">
-                <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                  <Activity className="w-5 h-5 text-cyan-400" />
-                  Movement History
-                </h3>
-                <div className="space-y-3">
-                  {selectedUser.scanHistory.map((scan, index) => (
-                    <div
-                      key={index}
-                      className={`flex items-center justify-between p-3 rounded-lg ${
-                        scan.flagged ? 'bg-red-500/10 border border-red-500/30' : 'bg-white/5'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <MapPin className={`w-5 h-5 ${scan.flagged ? 'text-red-400' : 'text-cyan-400'}`} />
+                        <MapPin className={`w-5 h-5 ${scan.flagged ? 'text-rose-500' : 'text-cyan-600'}`} />
                         <div>
-                          <div className="text-white font-semibold">{scan.zone}</div>
-                          <div className="text-xs text-gray-400 capitalize">{scan.type}</div>
+                          <div className="text-slate-900 font-semibold">{scan.zone}</div>
+                          <div className="text-xs text-slate-500 capitalize">{scan.type}</div>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-gray-400" />
-                        <span className="text-gray-400 text-sm">{scan.timestamp}</span>
+                        <Clock className="w-4 h-4 text-slate-400" />
+                        <span className="text-slate-500 text-sm">{scan.timestamp}</span>
                         {scan.flagged && (
-                          <AlertTriangle className="w-4 h-4 text-red-400 ml-2" />
+                          <AlertTriangle className="w-4 h-4 text-rose-500 ml-2" />
                         )}
                       </div>
                     </div>
@@ -692,93 +584,22 @@ export default function RFIDRegistryView() {
                 </div>
               </div>
 
-              {/* Admin Actions */}
-              <div className="bg-white/5 rounded-lg p-4">
-                <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-yellow-400" />
-                  User Management Actions
-                </h3>
-                <div className="grid grid-cols-2 gap-3">
-                  <button
-                    onClick={() => {
-                      handleReassign(selectedUser.id);
-                      setSelectedUser(null);
-                    }}
-                    className="px-4 py-3 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/50 text-blue-400 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all"
-                  >
-                    <RefreshCw className="w-5 h-5" />
-                    Reassign RFID
-                  </button>
-                  
-                  {selectedUser.status !== 'blocked' ? (
-                    <button
-                      onClick={() => {
-                        handleDisable(selectedUser.id);
-                        setSelectedUser(null);
-                      }}
-                      className="px-4 py-3 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 text-red-400 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all"
-                    >
-                      <Ban className="w-5 h-5" />
-                      Block User
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        handleEnable(selectedUser.id);
-                        setSelectedUser(null);
-                      }}
-                      className="px-4 py-3 bg-green-500/20 hover:bg-green-500/30 border border-green-500/50 text-green-400 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all"
-                    >
-                      <CheckCircle className="w-5 h-5" />
-                      Unblock User
-                    </button>
-                  )}
-
-                  <button
-                    onClick={() => setSelectedUser(null)}
-                    className="px-4 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold transition-all col-span-2"
-                  >
-                    Close Profile
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-                        <div>
-                          <div className="text-white font-semibold">{scan.zone}</div>
-                          <div className="text-xs text-gray-400 capitalize">{scan.type}</div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-gray-400" />
-                        <span className="text-gray-400 text-sm">{scan.timestamp}</span>
-                        {scan.flagged && (
-                          <AlertTriangle className="w-4 h-4 text-red-400 ml-2" />
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Admin Actions */}
-              <div className="bg-white/5 rounded-lg p-4">
-                <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-yellow-400" />
+              {/* Super Admin Actions */}
+              <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4">
+                <h3 className="text-slate-900 font-semibold mb-4 flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-amber-600" />
                   Super Admin Actions
                 </h3>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {selectedRFID.status !== 'blocked' ? (
                     <button
                       onClick={() => {
                         handleDisable(selectedRFID.id);
                         setSelectedRFID(null);
                       }}
-                      className="px-4 py-3 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 text-red-400 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all"
+                      className="px-4 py-2.5 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
                     >
-                      <Ban className="w-5 h-5" />
+                      <Ban className="w-4 h-4" />
                       Disable RFID
                     </button>
                   ) : (
@@ -787,9 +608,9 @@ export default function RFIDRegistryView() {
                         handleEnable(selectedRFID.id);
                         setSelectedRFID(null);
                       }}
-                      className="px-4 py-3 bg-green-500/20 hover:bg-green-500/30 border border-green-500/50 text-green-400 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all"
+                      className="px-4 py-2.5 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
                     >
-                      <CheckCircle className="w-5 h-5" />
+                      <CheckCircle className="w-4 h-4" />
                       Enable RFID
                     </button>
                   )}
@@ -799,9 +620,9 @@ export default function RFIDRegistryView() {
                       handleReassign(selectedRFID.id);
                       setSelectedRFID(null);
                     }}
-                    className="px-4 py-3 bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/50 text-blue-400 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all"
+                    className="px-4 py-2.5 bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
                   >
-                    <RefreshCw className="w-5 h-5" />
+                    <RefreshCw className="w-4 h-4" />
                     Reassign RFID
                   </button>
                   
@@ -811,16 +632,16 @@ export default function RFIDRegistryView() {
                         handleMarkSuspicious(selectedRFID.id);
                         setSelectedRFID(null);
                       }}
-                      className="px-4 py-3 bg-yellow-500/20 hover:bg-yellow-500/30 border border-yellow-500/50 text-yellow-400 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all"
+                      className="px-4 py-2.5 bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-700 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
                     >
-                      <AlertTriangle className="w-5 h-5" />
-                      Mark Suspicious
+                      <AlertTriangle className="w-4 h-4" />
+                      Flag Suspicious
                     </button>
                   )}
                   
                   <button
                     onClick={() => setSelectedRFID(null)}
-                    className="px-4 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg font-semibold transition-all"
+                    className="px-4 py-2.5 bg-slate-200/80 hover:bg-slate-300/80 text-slate-700 rounded-lg text-sm font-semibold transition-all"
                   >
                     Close
                   </button>
@@ -828,10 +649,199 @@ export default function RFIDRegistryView() {
               </div>
 
               {/* Audit Trail */}
-              <div className="mt-6 pt-6 border-t border-white/10">
-                <p className="text-xs text-gray-500">
+              <div className="mt-5 pt-4 border-t border-slate-200">
+                <p className="text-xs text-slate-400">
                   🔒 All Super Admin actions are logged and audited for security compliance
                 </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* User Profile Modal */}
+      <AnimatePresence>
+        {selectedUser && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setSelectedUser(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 20 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white border border-slate-200 rounded-2xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl text-slate-900"
+            >
+              {/* User Profile Header */}
+              <div className="flex items-start justify-between mb-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cyan-600 to-blue-600 flex items-center justify-center text-white text-2xl font-bold shadow-md">
+                    {selectedUser.assignedTo?.charAt(0) || 'U'}
+                  </div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-slate-900 mb-1">{selectedUser.assignedTo}</h2>
+                    <p className="text-slate-500 text-sm">Age: {selectedUser.age} • {selectedUser.address}</p>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className={`px-3 py-1 rounded-full text-xs font-semibold border ${getStatusColor(selectedUser.status)}`}>
+                        {selectedUser.status}
+                      </span>
+                      {selectedUser.flagged && (
+                        <span className="px-3 py-1 bg-amber-50 border border-amber-200 text-amber-700 rounded-full text-xs font-semibold flex items-center gap-1">
+                          <AlertTriangle className="w-3 h-3 text-amber-600" />
+                          Flagged
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedUser(null)}
+                  className="p-2 hover:bg-slate-100 rounded-lg transition-colors text-slate-400 hover:text-slate-600"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* User Information Grid */}
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4">
+                  <div className="text-xs text-slate-500 font-medium mb-1 flex items-center gap-2">
+                    <Phone className="w-4 h-4 text-slate-400" />
+                    Phone Number
+                  </div>
+                  <div className="text-slate-900 font-semibold">{selectedUser.phoneNumber}</div>
+                </div>
+                <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4">
+                  <div className="text-xs text-slate-500 font-medium mb-1 flex items-center gap-2">
+                    <Mail className="w-4 h-4 text-slate-400" />
+                    Email Address
+                  </div>
+                  <div className="text-slate-900 font-semibold text-sm truncate">{selectedUser.email}</div>
+                </div>
+                <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4">
+                  <div className="text-xs text-slate-500 font-medium mb-1 flex items-center gap-2">
+                    <Radio className="w-4 h-4 text-cyan-600" />
+                    RFID UID
+                  </div>
+                  <code className="text-cyan-700 font-mono text-sm font-semibold">
+                    {showMasked ? selectedUser.maskedUid : selectedUser.uid}
+                  </code>
+                </div>
+                <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4">
+                  <div className="text-xs text-slate-500 font-medium mb-1 flex items-center gap-2">
+                    <Calendar className="w-4 h-4 text-slate-400" />
+                    Registered Date
+                  </div>
+                  <div className="text-slate-900 font-semibold">{selectedUser.registeredDate}</div>
+                </div>
+              </div>
+
+              {/* Current Location */}
+              <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4 mb-6">
+                <h3 className="text-slate-900 font-semibold mb-3 flex items-center gap-2">
+                  <MapPin className="w-5 h-5 text-cyan-600" />
+                  Current Location
+                </h3>
+                <div className="flex items-center justify-between p-3 bg-white border border-slate-200 rounded-lg">
+                  <div>
+                    <div className="text-slate-900 font-semibold">{selectedUser.lastZone}</div>
+                    <div className="text-xs text-slate-500">Last scanned: {selectedUser.lastScan}</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-slate-500 text-xs">Total Scans</div>
+                    <div className="text-slate-900 font-bold text-xl">{selectedUser.totalScans}</div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Movement History */}
+              <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4 mb-6">
+                <h3 className="text-slate-900 font-semibold mb-4 flex items-center gap-2">
+                  <Activity className="w-5 h-5 text-cyan-600" />
+                  Movement History
+                </h3>
+                <div className="space-y-3">
+                  {selectedUser.scanHistory?.map((scan, index) => (
+                    <div
+                      key={index}
+                      className={`flex items-center justify-between p-3 rounded-lg border ${
+                        scan.flagged
+                          ? 'bg-rose-50 border-rose-200 text-rose-800'
+                          : 'bg-white border-slate-200 text-slate-700'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <MapPin className={`w-5 h-5 ${scan.flagged ? 'text-rose-500' : 'text-cyan-600'}`} />
+                        <div>
+                          <div className="text-slate-900 font-semibold">{scan.zone}</div>
+                          <div className="text-xs text-slate-500 capitalize">{scan.type}</div>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Clock className="w-4 h-4 text-slate-400" />
+                        <span className="text-slate-500 text-sm">{scan.timestamp}</span>
+                        {scan.flagged && (
+                          <AlertTriangle className="w-4 h-4 text-rose-500 ml-2" />
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Admin Actions */}
+              <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-4">
+                <h3 className="text-slate-900 font-semibold mb-4 flex items-center gap-2">
+                  <Shield className="w-5 h-5 text-amber-600" />
+                  User Management Actions
+                </h3>
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    onClick={() => {
+                      handleReassign(selectedUser.id);
+                      setSelectedUser(null);
+                    }}
+                    className="px-4 py-2.5 bg-blue-50 hover:bg-blue-100 border border-blue-200 text-blue-700 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
+                  >
+                    <RefreshCw className="w-4 h-4" />
+                    Reassign RFID
+                  </button>
+                  
+                  {selectedUser.status !== 'blocked' ? (
+                    <button
+                      onClick={() => {
+                        handleDisable(selectedUser.id);
+                        setSelectedUser(null);
+                      }}
+                      className="px-4 py-2.5 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
+                    >
+                      <Ban className="w-4 h-4" />
+                      Block User
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => {
+                        handleEnable(selectedUser.id);
+                        setSelectedUser(null);
+                      }}
+                      className="px-4 py-2.5 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 rounded-lg text-sm font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
+                    >
+                      <CheckCircle className="w-4 h-4" />
+                      Unblock User
+                    </button>
+                  )}
+
+                  <button
+                    onClick={() => setSelectedUser(null)}
+                    className="px-4 py-2.5 bg-slate-200/80 hover:bg-slate-300/80 text-slate-700 rounded-lg text-sm font-semibold transition-all col-span-2"
+                  >
+                    Close Profile
+                  </button>
+                </div>
               </div>
             </motion.div>
           </motion.div>

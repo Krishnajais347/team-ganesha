@@ -4,17 +4,17 @@ import {
   MapPin, 
   Users, 
   TrendingUp, 
-  TrendingDown,
-  AlertTriangle,
-  Shield,
-  Ban,
-  CheckCircle,
-  Bell,
-  X,
-  Activity,
-  ArrowUpRight,
-  ArrowDownRight,
-  Zap
+  TrendingDown, 
+  AlertTriangle, 
+  Shield, 
+  Ban, 
+  CheckCircle, 
+  Bell, 
+  X, 
+  Activity, 
+  ArrowUpRight, 
+  ArrowDownRight, 
+  Zap 
 } from 'lucide-react';
 
 // Simulated zones data
@@ -39,17 +39,17 @@ const ZONES_DATA = [
 
 const getRiskLevel = (current, max) => {
   const percentage = (current / max) * 100;
-  if (percentage >= 90) return { level: 'critical', color: '#ef4444', label: 'Critical' };
-  if (percentage >= 75) return { level: 'warning', color: '#f59e0b', label: 'Warning' };
-  return { level: 'safe', color: '#10b981', label: 'Safe' };
+  if (percentage >= 90) return { level: 'critical', color: '#e11d48', badgeBg: 'bg-rose-50 text-rose-700 border-rose-200', label: 'Critical' };
+  if (percentage >= 75) return { level: 'warning', color: '#d97706', badgeBg: 'bg-amber-50 text-amber-700 border-amber-200', label: 'Warning' };
+  return { level: 'safe', color: '#059669', badgeBg: 'bg-emerald-50 text-emerald-700 border-emerald-200', label: 'Safe' };
 };
 
 const getZoneSize = (type) => {
   switch(type) {
-    case 'gate': return 40;
-    case 'ghat': return 60;
-    case 'sector': return 50;
-    default: return 45;
+    case 'gate': return 44;
+    case 'ghat': return 64;
+    case 'sector': return 54;
+    default: return 48;
   }
 };
 
@@ -90,65 +90,62 @@ export default function HeatmapView() {
 
   const handleBlockEntry = (zoneId) => {
     alert(`Entry BLOCKED for ${zones.find(z => z.id === zoneId)?.name}`);
-    // API call would go here
   };
 
   const handleAllowEntry = (zoneId) => {
     alert(`Entry ALLOWED for ${zones.find(z => z.id === zoneId)?.name}`);
-    // API call would go here
   };
 
   const handleSendAlert = (zoneId) => {
     alert(`Alert SENT for ${zones.find(z => z.id === zoneId)?.name}`);
-    // API call would go here
   };
 
   return (
-    <div className="w-full h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative">
+    <div className="w-full h-screen bg-slate-50 relative overflow-hidden select-none">
       {/* Background Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(6,182,212,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(6,182,212,0.05)_1px,transparent_1px)] bg-[size:50px_50px]" />
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(148,163,184,0.12)_1px,transparent_1px),linear-gradient(90deg,rgba(148,163,184,0.12)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
 
       {/* Header */}
-      <div className="absolute top-0 left-0 right-0 z-20 bg-black/50 backdrop-blur-xl border-b border-cyan-500/20 p-4">
+      <div className="absolute top-0 left-0 right-0 z-20 bg-white/85 backdrop-blur-xl border-b border-slate-200/90 px-6 py-4 shadow-xs">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold text-white flex items-center gap-3">
-              <MapPin className="w-8 h-8 text-cyan-400" />
+            <h1 className="text-2xl font-bold text-slate-900 flex items-center gap-2.5">
+              <MapPin className="w-6 h-6 text-cyan-600" />
               Live Crowd Heatmap
             </h1>
-            <p className="text-gray-400 mt-1">Real-time crowd monitoring across all zones</p>
+            <p className="text-slate-500 text-xs mt-0.5">Real-time geospatial crowd density & checkpoint monitoring</p>
           </div>
           
           {/* Legend */}
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded-full bg-green-500"></div>
-              <span className="text-sm text-gray-300">Safe (&lt;75%)</span>
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-emerald-700 border border-emerald-200 rounded-full text-xs font-semibold">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              Safe (&lt;75%)
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded-full bg-yellow-500"></div>
-              <span className="text-sm text-gray-300">Warning (75-90%)</span>
+            <div className="flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-700 border border-amber-200 rounded-full text-xs font-semibold">
+              <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+              Warning (75-90%)
             </div>
-            <div className="flex items-center gap-2">
-              <div className="w-4 h-4 rounded-full bg-red-500"></div>
-              <span className="text-sm text-gray-300">Critical (&gt;90%)</span>
+            <div className="flex items-center gap-1.5 px-3 py-1 bg-rose-50 text-rose-700 border border-rose-200 rounded-full text-xs font-semibold">
+              <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
+              Critical (&gt;90%)
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Map Area */}
-      <div className="absolute inset-0 pt-24 pb-4 px-4">
-        <div className="relative w-full h-full bg-slate-900/50 backdrop-blur-sm rounded-2xl border border-cyan-500/20 overflow-hidden">
-          {/* Map Background */}
-          <div className="absolute inset-0 opacity-30">
+      <div className="absolute inset-0 pt-20 pb-20 px-6">
+        <div className="relative w-full h-full bg-white/70 backdrop-blur-sm rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          {/* Map Grid Pattern */}
+          <div className="absolute inset-0 opacity-40 pointer-events-none">
             <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
               <defs>
-                <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                  <path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(6,182,212,0.1)" strokeWidth="0.5"/>
+                <pattern id="light-grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                  <path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(203,213,225,0.7)" strokeWidth="0.4"/>
                 </pattern>
               </defs>
-              <rect width="100" height="100" fill="url(#grid)" />
+              <rect width="100" height="100" fill="url(#light-grid)" />
             </svg>
           </div>
 
@@ -167,44 +164,43 @@ export default function HeatmapView() {
                   top: `${zone.y}%`,
                   transform: 'translate(-50%, -50%)'
                 }}
-                whileHover={{ scale: 1.1 }}
+                whileHover={{ scale: 1.12 }}
                 onMouseEnter={() => setHoveredZone(zone)}
                 onMouseLeave={() => setHoveredZone(null)}
                 onClick={() => setSelectedZone(zone)}
               >
                 {/* Zone Circle */}
                 <motion.div
-                  className="relative rounded-full flex items-center justify-center shadow-2xl"
+                  className="relative rounded-full flex items-center justify-center shadow-md transition-shadow"
                   style={{
                     width: `${size}px`,
                     height: `${size}px`,
-                    backgroundColor: `${risk.color}40`,
-                    border: `3px solid ${risk.color}`,
-                    boxShadow: `0 0 30px ${risk.color}80`
+                    backgroundColor: `${risk.color}25`,
+                    border: `2.5px solid ${risk.color}`,
                   }}
                   animate={{
                     boxShadow: [
-                      `0 0 20px ${risk.color}60`,
-                      `0 0 40px ${risk.color}90`,
-                      `0 0 20px ${risk.color}60`
+                      `0 0 12px ${risk.color}40`,
+                      `0 0 24px ${risk.color}70`,
+                      `0 0 12px ${risk.color}40`
                     ]
                   }}
-                  transition={{ duration: 2, repeat: Infinity }}
+                  transition={{ duration: 2.2, repeat: Infinity }}
                 >
-                  <Users className="w-5 h-5 text-white" />
+                  <Users className="w-4 h-4 text-slate-800" />
                   
                   {/* Percentage Badge */}
                   <div 
-                    className="absolute -top-2 -right-2 w-8 h-8 rounded-full text-xs font-bold flex items-center justify-center text-white"
+                    className="absolute -top-2 -right-2 min-w-6 h-6 px-1 rounded-full text-[11px] font-extrabold flex items-center justify-center text-white shadow-xs"
                     style={{ backgroundColor: risk.color }}
                   >
-                    {Math.round(percentage)}
+                    {Math.round(percentage)}%
                   </div>
                 </motion.div>
 
                 {/* Zone Label */}
-                <div className="absolute top-full mt-2 left-1/2 -translate-x-1/2 whitespace-nowrap">
-                  <div className="bg-black/80 backdrop-blur-sm px-2 py-1 rounded text-xs text-white border border-white/20">
+                <div className="absolute top-full mt-1.5 left-1/2 -translate-x-1/2 whitespace-nowrap">
+                  <div className="bg-white/90 backdrop-blur-md px-2 py-0.5 rounded-md text-[11px] font-semibold text-slate-800 border border-slate-200/90 shadow-xs">
                     {zone.name}
                   </div>
                 </div>
@@ -214,8 +210,8 @@ export default function HeatmapView() {
                   <motion.div
                     className="absolute inset-0 rounded-full"
                     style={{ border: `2px solid ${risk.color}` }}
-                    animate={{ scale: [1, 1.5, 1], opacity: [0.8, 0, 0.8] }}
-                    transition={{ duration: 2, repeat: Infinity }}
+                    animate={{ scale: [1, 1.6, 1], opacity: [0.7, 0, 0.7] }}
+                    transition={{ duration: 1.8, repeat: Infinity }}
                   />
                 )}
               </motion.div>
@@ -232,41 +228,41 @@ export default function HeatmapView() {
                 className="absolute z-30 pointer-events-none"
                 style={{
                   left: `${hoveredZone.x}%`,
-                  top: `${hoveredZone.y - 15}%`,
+                  top: `${hoveredZone.y - 12}%`,
                   transform: 'translate(-50%, -100%)'
                 }}
               >
-                <div className="bg-black/95 backdrop-blur-xl border border-cyan-500/30 rounded-lg p-4 shadow-2xl min-w-[250px]">
-                  <h3 className="text-white font-semibold mb-2">{hoveredZone.name}</h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">Current:</span>
-                      <span className="text-white font-semibold">{hoveredZone.current.toLocaleString()}</span>
+                <div className="bg-white/95 backdrop-blur-xl border border-slate-200 rounded-xl p-4 shadow-xl min-w-[240px] text-slate-900">
+                  <h3 className="text-slate-900 font-bold text-sm mb-2">{hoveredZone.name}</h3>
+                  <div className="space-y-1.5 text-xs">
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Current Crowd:</span>
+                      <span className="text-slate-900 font-bold">{hoveredZone.current.toLocaleString()}</span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">Capacity:</span>
-                      <span className="text-white font-semibold">{hoveredZone.max.toLocaleString()}</span>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Total Capacity:</span>
+                      <span className="text-slate-900 font-semibold">{hoveredZone.max.toLocaleString()}</span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-400">Risk Level:</span>
+                    <div className="flex justify-between items-center">
+                      <span className="text-slate-500">Risk Level:</span>
                       <span 
-                        className="font-semibold"
+                        className="font-bold uppercase text-[11px]"
                         style={{ color: getRiskLevel(hoveredZone.current, hoveredZone.max).color }}
                       >
                         {getRiskLevel(hoveredZone.current, hoveredZone.max).label}
                       </span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-400 flex items-center gap-1">
-                        <ArrowUpRight className="w-3 h-3" /> Entry:
+                    <div className="flex justify-between border-t border-slate-100 pt-1.5 mt-1.5">
+                      <span className="text-slate-500 flex items-center gap-1">
+                        <ArrowUpRight className="w-3 h-3 text-emerald-600" /> Inflow:
                       </span>
-                      <span className="text-green-400 font-semibold">{hoveredZone.entry}/min</span>
+                      <span className="text-emerald-700 font-bold">{hoveredZone.entry}/min</span>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-400 flex items-center gap-1">
-                        <ArrowDownRight className="w-3 h-3" /> Exit:
+                    <div className="flex justify-between">
+                      <span className="text-slate-500 flex items-center gap-1">
+                        <ArrowDownRight className="w-3 h-3 text-rose-600" /> Outflow:
                       </span>
-                      <span className="text-red-400 font-semibold">{hoveredZone.exit}/min</span>
+                      <span className="text-rose-700 font-bold">{hoveredZone.exit}/min</span>
                     </div>
                   </div>
                 </div>
@@ -276,7 +272,7 @@ export default function HeatmapView() {
         </div>
       </div>
 
-      {/* Side Panel */}
+      {/* Side Panel Drawer */}
       <AnimatePresence>
         {selectedZone && (
           <motion.div
@@ -284,50 +280,50 @@ export default function HeatmapView() {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-            className="absolute top-0 right-0 bottom-0 w-[450px] bg-black/95 backdrop-blur-xl border-l border-cyan-500/30 z-50 overflow-y-auto"
+            className="absolute top-0 right-0 bottom-0 w-[420px] bg-white/95 backdrop-blur-xl border-l border-slate-200 z-50 overflow-y-auto shadow-2xl text-slate-900"
           >
             {/* Panel Header */}
-            <div className="sticky top-0 bg-gradient-to-r from-cyan-600 to-blue-600 p-4 border-b border-cyan-500/30">
+            <div className="sticky top-0 bg-gradient-to-r from-cyan-600 to-blue-600 p-5 text-white z-10">
               <div className="flex items-start justify-between">
                 <div>
-                  <h2 className="text-xl font-bold text-white">{selectedZone.name}</h2>
-                  <p className="text-cyan-100 text-sm mt-1 capitalize">{selectedZone.type} Zone</p>
+                  <h2 className="text-lg font-bold">{selectedZone.name}</h2>
+                  <p className="text-cyan-100 text-xs mt-0.5 capitalize">{selectedZone.type} Zone Details</p>
                 </div>
                 <button
                   onClick={() => setSelectedZone(null)}
-                  className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+                  className="p-1.5 hover:bg-white/20 rounded-lg transition-colors text-white"
                 >
-                  <X className="w-5 h-5 text-white" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
             </div>
 
-            <div className="p-6 space-y-6">
+            <div className="p-6 space-y-5">
               {/* Current Status */}
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                  <Activity className="w-5 h-5 text-cyan-400" />
-                  Current Status
+              <div className="bg-slate-50 rounded-xl p-4 border border-slate-200/80">
+                <h3 className="text-slate-900 font-bold text-sm mb-3 flex items-center gap-2">
+                  <Activity className="w-4 h-4 text-cyan-600" />
+                  Live Status
                 </h3>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <div className="text-gray-400 text-xs mb-1">Crowd Count</div>
-                    <div className="text-2xl font-bold text-white">{selectedZone.current.toLocaleString()}</div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div className="bg-white p-3 rounded-lg border border-slate-200/60">
+                    <div className="text-slate-500 text-[11px] mb-0.5">Crowd Count</div>
+                    <div className="text-xl font-bold text-slate-900">{selectedZone.current.toLocaleString()}</div>
                   </div>
-                  <div>
-                    <div className="text-gray-400 text-xs mb-1">Capacity</div>
-                    <div className="text-2xl font-bold text-white">{selectedZone.max.toLocaleString()}</div>
+                  <div className="bg-white p-3 rounded-lg border border-slate-200/60">
+                    <div className="text-slate-500 text-[11px] mb-0.5">Capacity Limit</div>
+                    <div className="text-xl font-bold text-slate-900">{selectedZone.max.toLocaleString()}</div>
                   </div>
-                  <div>
-                    <div className="text-gray-400 text-xs mb-1">Utilization</div>
-                    <div className="text-2xl font-bold text-cyan-400">
+                  <div className="bg-white p-3 rounded-lg border border-slate-200/60">
+                    <div className="text-slate-500 text-[11px] mb-0.5">Utilization</div>
+                    <div className="text-xl font-bold text-cyan-700">
                       {Math.round((selectedZone.current / selectedZone.max) * 100)}%
                     </div>
                   </div>
-                  <div>
-                    <div className="text-gray-400 text-xs mb-1">Risk Level</div>
+                  <div className="bg-white p-3 rounded-lg border border-slate-200/60">
+                    <div className="text-slate-500 text-[11px] mb-0.5">Risk Level</div>
                     <div 
-                      className="text-lg font-bold"
+                      className="text-base font-bold"
                       style={{ color: getRiskLevel(selectedZone.current, selectedZone.max).color }}
                     >
                       {getRiskLevel(selectedZone.current, selectedZone.max).label}
@@ -337,29 +333,29 @@ export default function HeatmapView() {
               </div>
 
               {/* Flow Rates */}
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                  <TrendingUp className="w-5 h-5 text-green-400" />
+              <div className="bg-slate-50 rounded-xl p-4 border border-slate-200/80">
+                <h3 className="text-slate-900 font-bold text-sm mb-3 flex items-center gap-2">
+                  <TrendingUp className="w-4 h-4 text-emerald-600" />
                   Flow Rates
                 </h3>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-400 flex items-center gap-2">
-                      <ArrowUpRight className="w-4 h-4 text-green-400" />
-                      Entry Rate
+                <div className="space-y-2 text-xs">
+                  <div className="flex items-center justify-between p-2 bg-white rounded-lg border border-slate-200/60">
+                    <span className="text-slate-600 flex items-center gap-1.5">
+                      <ArrowUpRight className="w-4 h-4 text-emerald-600" />
+                      Entry Flow
                     </span>
-                    <span className="text-green-400 font-bold">{selectedZone.entry} people/min</span>
+                    <span className="text-emerald-700 font-bold">{selectedZone.entry} people/min</span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-400 flex items-center gap-2">
-                      <ArrowDownRight className="w-4 h-4 text-red-400" />
-                      Exit Rate
+                  <div className="flex items-center justify-between p-2 bg-white rounded-lg border border-slate-200/60">
+                    <span className="text-slate-600 flex items-center gap-1.5">
+                      <ArrowDownRight className="w-4 h-4 text-rose-600" />
+                      Exit Flow
                     </span>
-                    <span className="text-red-400 font-bold">{selectedZone.exit} people/min</span>
+                    <span className="text-rose-700 font-bold">{selectedZone.exit} people/min</span>
                   </div>
-                  <div className="flex items-center justify-between pt-3 border-t border-white/10">
-                    <span className="text-gray-400">Net Flow</span>
-                    <span className={`font-bold ${selectedZone.entry - selectedZone.exit > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                  <div className="flex items-center justify-between p-2 bg-slate-100/80 rounded-lg">
+                    <span className="text-slate-700 font-medium">Net Surge</span>
+                    <span className={`font-bold ${selectedZone.entry - selectedZone.exit > 0 ? 'text-emerald-700' : 'text-rose-700'}`}>
                       {selectedZone.entry - selectedZone.exit > 0 ? '+' : ''}{selectedZone.entry - selectedZone.exit} people/min
                     </span>
                   </div>
@@ -367,20 +363,20 @@ export default function HeatmapView() {
               </div>
 
               {/* 30-Min Trend Graph */}
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                <h3 className="text-white font-semibold mb-4">Last 30 Minutes Trend</h3>
-                <div className="h-32 relative">
+              <div className="bg-slate-50 rounded-xl p-4 border border-slate-200/80">
+                <h3 className="text-slate-900 font-bold text-sm mb-2">30-Min Historical Trend</h3>
+                <div className="h-28 relative bg-white rounded-lg p-2 border border-slate-200/60">
                   <svg className="w-full h-full" viewBox="0 0 300 100" preserveAspectRatio="none">
                     <defs>
-                      <linearGradient id="gradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                        <stop offset="0%" stopColor="#06b6d4" stopOpacity="0.5" />
-                        <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.1" />
+                      <linearGradient id="lightGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stopColor="#0891b2" stopOpacity="0.3" />
+                        <stop offset="100%" stopColor="#0891b2" stopOpacity="0.02" />
                       </linearGradient>
                     </defs>
                     
                     {/* Grid lines */}
                     {[0, 25, 50, 75, 100].map(y => (
-                      <line key={y} x1="0" y1={y} x2="300" y2={y} stroke="rgba(255,255,255,0.1)" strokeWidth="0.5" />
+                      <line key={y} x1="0" y1={y} x2="300" y2={y} stroke="rgba(203,213,225,0.5)" strokeWidth="0.8" />
                     ))}
                     
                     {/* Trend line */}
@@ -388,72 +384,72 @@ export default function HeatmapView() {
                       points={historicalData.map((d, i) => 
                         `${(i / (historicalData.length - 1)) * 300},${100 - (d.count / selectedZone.max) * 100}`
                       ).join(' ')}
-                      fill="url(#gradient)"
-                      stroke="#06b6d4"
-                      strokeWidth="2"
+                      fill="url(#lightGradient)"
+                      stroke="#0891b2"
+                      strokeWidth="2.5"
                     />
                   </svg>
                 </div>
-                <div className="flex justify-between mt-2 text-xs text-gray-500">
+                <div className="flex justify-between mt-1.5 text-[10px] text-slate-400">
                   <span>-30 min</span>
                   <span>Now</span>
                 </div>
               </div>
 
               {/* AI Prediction */}
-              <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-xl p-4 border border-purple-500/30">
-                <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
-                  <Zap className="w-5 h-5 text-purple-400" />
-                  AI Risk Prediction (Next 15 min)
+              <div className="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-4 border border-indigo-200">
+                <h3 className="text-indigo-950 font-bold text-sm mb-2 flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-indigo-600" />
+                  AI Surge Prediction (Next 15 min)
                 </h3>
-                <div className="space-y-2">
+                <div className="space-y-1.5 text-xs">
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-300 text-sm">Predicted Crowd:</span>
-                    <span className="text-white font-semibold">
+                    <span className="text-slate-600">Projected Crowd:</span>
+                    <span className="text-slate-900 font-bold">
                       {Math.round(selectedZone.current * 1.15).toLocaleString()}
                     </span>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-gray-300 text-sm">Risk Level:</span>
-                    <span className="text-yellow-400 font-semibold">Increasing ⚠️</span>
+                    <span className="text-slate-600">Risk Trend:</span>
+                    <span className="text-amber-700 font-bold">Elevating ⚠️</span>
                   </div>
-                  <div className="mt-3 p-3 bg-black/30 rounded-lg">
-                    <p className="text-xs text-gray-300">
-                      ⚡ High inflow detected. Consider restricting entry if trend continues.
+                  <div className="mt-2 p-2.5 bg-white/80 rounded-lg border border-indigo-100">
+                    <p className="text-[11px] text-slate-700 leading-relaxed">
+                      ⚡ Inflow is outpacing outflow by 25%. Restricting entry gates recommended to prevent bottlenecking.
                     </p>
                   </div>
                 </div>
               </div>
 
               {/* Super Admin Actions */}
-              <div className="bg-white/5 rounded-xl p-4 border border-white/10">
-                <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                  <Shield className="w-5 h-5 text-yellow-400" />
-                  Super Admin Actions
+              <div className="bg-slate-50 rounded-xl p-4 border border-slate-200/80">
+                <h3 className="text-slate-900 font-bold text-sm mb-3 flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-amber-600" />
+                  Zone Control Actions
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-2.5">
                   <button
                     onClick={() => handleBlockEntry(selectedZone.id)}
-                    className="w-full px-4 py-3 bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 text-red-400 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all"
+                    className="w-full px-4 py-2.5 bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-700 rounded-lg text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
                   >
-                    <Ban className="w-5 h-5" />
-                    Block Entry
+                    <Ban className="w-4 h-4" />
+                    Block Zone Entry Gates
                   </button>
                   
                   <button
                     onClick={() => handleAllowEntry(selectedZone.id)}
-                    className="w-full px-4 py-3 bg-green-500/20 hover:bg-green-500/30 border border-green-500/50 text-green-400 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all"
+                    className="w-full px-4 py-2.5 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 text-emerald-700 rounded-lg text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
                   >
-                    <CheckCircle className="w-5 h-5" />
-                    Allow Entry
+                    <CheckCircle className="w-4 h-4" />
+                    Allow Unrestricted Entry
                   </button>
                   
                   <button
                     onClick={() => handleSendAlert(selectedZone.id)}
-                    className="w-full px-4 py-3 bg-yellow-500/20 hover:bg-yellow-500/30 border border-yellow-500/50 text-yellow-400 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all"
+                    className="w-full px-4 py-2.5 bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-700 rounded-lg text-xs font-semibold flex items-center justify-center gap-2 transition-all shadow-xs"
                   >
-                    <Bell className="w-5 h-5" />
-                    Send Alert
+                    <Bell className="w-4 h-4" />
+                    Dispatch Marshal Alert
                   </button>
                 </div>
               </div>
@@ -463,28 +459,28 @@ export default function HeatmapView() {
       </AnimatePresence>
 
       {/* Stats Bar (Bottom) */}
-      <div className="absolute bottom-4 left-4 right-4 z-20 flex gap-4">
-        <div className="flex-1 bg-black/70 backdrop-blur-xl border border-green-500/30 rounded-lg p-3">
-          <div className="text-xs text-gray-400 mb-1">Safe Zones</div>
-          <div className="text-2xl font-bold text-green-400">
+      <div className="absolute bottom-4 left-6 right-6 z-20 flex gap-4">
+        <div className="flex-1 bg-white/90 backdrop-blur-xl border border-emerald-200 rounded-xl p-3 shadow-xs">
+          <div className="text-[11px] text-slate-500 font-medium mb-0.5">Safe Zones</div>
+          <div className="text-xl font-bold text-emerald-700">
             {zones.filter(z => getRiskLevel(z.current, z.max).level === 'safe').length}
           </div>
         </div>
-        <div className="flex-1 bg-black/70 backdrop-blur-xl border border-yellow-500/30 rounded-lg p-3">
-          <div className="text-xs text-gray-400 mb-1">Warning Zones</div>
-          <div className="text-2xl font-bold text-yellow-400">
+        <div className="flex-1 bg-white/90 backdrop-blur-xl border border-amber-200 rounded-xl p-3 shadow-xs">
+          <div className="text-[11px] text-slate-500 font-medium mb-0.5">Warning Zones</div>
+          <div className="text-xl font-bold text-amber-700">
             {zones.filter(z => getRiskLevel(z.current, z.max).level === 'warning').length}
           </div>
         </div>
-        <div className="flex-1 bg-black/70 backdrop-blur-xl border border-red-500/30 rounded-lg p-3">
-          <div className="text-xs text-gray-400 mb-1">Critical Zones</div>
-          <div className="text-2xl font-bold text-red-400">
+        <div className="flex-1 bg-white/90 backdrop-blur-xl border border-rose-200 rounded-xl p-3 shadow-xs">
+          <div className="text-[11px] text-slate-500 font-medium mb-0.5">Critical Zones</div>
+          <div className="text-xl font-bold text-rose-700">
             {zones.filter(z => getRiskLevel(z.current, z.max).level === 'critical').length}
           </div>
         </div>
-        <div className="flex-1 bg-black/70 backdrop-blur-xl border border-cyan-500/30 rounded-lg p-3">
-          <div className="text-xs text-gray-400 mb-1">Total Crowd</div>
-          <div className="text-2xl font-bold text-cyan-400">
+        <div className="flex-1 bg-white/90 backdrop-blur-xl border border-cyan-200 rounded-xl p-3 shadow-xs">
+          <div className="text-[11px] text-slate-500 font-medium mb-0.5">Total Monitored Crowd</div>
+          <div className="text-xl font-bold text-cyan-800">
             {zones.reduce((acc, z) => acc + z.current, 0).toLocaleString()}
           </div>
         </div>

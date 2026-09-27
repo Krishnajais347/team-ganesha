@@ -106,19 +106,19 @@ const AlertsView = () => {
     : alerts.filter(a => a.type === filter)
 
   return (
-    <div className="space-y-6">
+    <div className="p-6 space-y-6">
       {/* Filter Tabs */}
-      <div className="glass-panel p-2 flex gap-2 inline-flex">
+      <div className="bg-white border border-slate-200 p-1.5 rounded-2xl flex gap-1.5 inline-flex shadow-xs">
         {['all', 'critical', 'warning', 'info', 'success'].map((type) => (
           <motion.button
             key={type}
             onClick={() => setFilter(type)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className={`px-4 py-2 rounded-lg capitalize font-medium transition-colors ${
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className={`px-4 py-2 rounded-xl capitalize text-sm font-bold transition-all cursor-pointer ${
               filter === type 
-                ? 'bg-white/20 text-white' 
-                : 'text-zinc-400 hover:text-white'
+                ? 'bg-cyan-50 border border-cyan-200 text-cyan-800 shadow-2xs' 
+                : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
             }`}
           >
             {type}
@@ -136,45 +136,60 @@ const AlertsView = () => {
               key={alert.id}
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className={`glass-panel p-6 border-l-4 border-${color}-400`}
+              transition={{ delay: index * 0.08 }}
+              className={`bg-white border border-slate-200 rounded-2xl p-6 shadow-xs hover:shadow-md transition-all ${
+                color === 'red' ? 'border-l-4 border-l-rose-500' :
+                color === 'yellow' ? 'border-l-4 border-l-amber-500' :
+                color === 'blue' ? 'border-l-4 border-l-blue-500' :
+                'border-l-4 border-l-emerald-500'
+              }`}
             >
               <div className="flex items-start gap-4">
-                <div className={`p-3 rounded-xl bg-${color}-500/20`}>
-                  <Icon className={`w-6 h-6 text-${color}-400`} />
+                <div className={`p-3 rounded-2xl ${
+                  color === 'red' ? 'bg-rose-50 border border-rose-100 text-rose-600' :
+                  color === 'yellow' ? 'bg-amber-50 border border-amber-100 text-amber-600' :
+                  color === 'blue' ? 'bg-blue-50 border border-blue-100 text-blue-600' :
+                  'bg-emerald-50 border border-emerald-100 text-emerald-600'
+                }`}>
+                  <Icon className="w-6 h-6" />
                 </div>
                 
                 <div className="flex-1">
                   <div className="flex items-start justify-between mb-2">
                     <div>
-                      <h3 className="text-lg font-semibold text-white">{alert.title}</h3>
-                      <p className="text-sm text-zinc-400">{alert.location}</p>
+                      <h3 className="text-lg font-bold text-slate-900">{alert.title}</h3>
+                      <p className="text-sm font-medium text-slate-500">{alert.location}</p>
                     </div>
                     <div className="text-right">
-                      <span className={`px-3 py-1 rounded-full text-xs font-medium bg-${color}-500/20 text-${color}-400`}>
+                      <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider border ${
+                        color === 'red' ? 'bg-rose-50 text-rose-700 border-rose-200' :
+                        color === 'yellow' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                        color === 'blue' ? 'bg-blue-50 text-blue-700 border-blue-200' :
+                        'bg-emerald-50 text-emerald-700 border-emerald-200'
+                      }`}>
                         {alert.status}
                       </span>
-                      <p className="text-xs text-zinc-500 mt-1">{alert.timestamp}</p>
+                      <p className="text-xs text-slate-400 font-medium mt-1">{alert.timestamp}</p>
                     </div>
                   </div>
                   
-                  <p className="text-zinc-300 mb-4">{alert.message}</p>
+                  <p className="text-slate-600 text-sm mb-4 leading-relaxed font-medium">{alert.message}</p>
                   
                   <div className="flex gap-2">
                     <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
                       onClick={() => handleViewDetails(alert)}
-                      className="px-4 py-2 rounded-lg bg-white/10 hover:bg-white/20 text-white text-sm font-medium transition-colors"
+                      className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-sm font-semibold border border-slate-200 transition-all cursor-pointer"
                     >
                       View Details
                     </motion.button>
                     {alert.status === 'active' && (
                       <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
                         onClick={() => handleAcknowledge(alert.id)}
-                        className={`px-4 py-2 rounded-lg bg-${color}-500/20 hover:bg-${color}-500/30 text-${color}-400 text-sm font-medium transition-colors`}
+                        className="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white text-sm font-semibold shadow-xs transition-all cursor-pointer"
                       >
                         Acknowledge
                       </motion.button>
@@ -194,15 +209,15 @@ const AlertsView = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4"
             onClick={() => setSelectedAlert(null)}
           >
             <motion.div
-              initial={{ scale: 0.9, y: 20 }}
+              initial={{ scale: 0.95, y: 20 }}
               animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.9, y: 20 }}
+              exit={{ scale: 0.95, y: 20 }}
               onClick={(e) => e.stopPropagation()}
-              className="bg-gradient-to-br from-gray-900 to-black border border-white/10 rounded-2xl p-6 max-w-2xl w-full shadow-2xl"
+              className="bg-white border border-slate-200 rounded-3xl p-7 max-w-2xl w-full shadow-2xl"
             >
               {/* Modal Header */}
               <div className="flex items-start justify-between mb-6">
@@ -210,55 +225,60 @@ const AlertsView = () => {
                   {(() => {
                     const { Icon, color } = getAlertIcon(selectedAlert.type)
                     return (
-                      <div className={`p-3 rounded-xl bg-${color}-500/20`}>
-                        <Icon className={`w-6 h-6 text-${color}-400`} />
+                      <div className={`p-3.5 rounded-2xl ${
+                        color === 'red' ? 'bg-rose-50 border border-rose-100 text-rose-600' :
+                        color === 'yellow' ? 'bg-amber-50 border border-amber-100 text-amber-600' :
+                        color === 'blue' ? 'bg-blue-50 border border-blue-100 text-blue-600' :
+                        'bg-emerald-50 border border-emerald-100 text-emerald-600'
+                      }`}>
+                        <Icon className="w-7 h-7" />
                       </div>
                     )
                   })()}
                   <div>
-                    <h2 className="text-2xl font-bold text-white">{selectedAlert.title}</h2>
-                    <p className="text-gray-400 mt-1">{selectedAlert.message}</p>
+                    <h2 className="text-2xl font-bold text-slate-900">{selectedAlert.title}</h2>
+                    <p className="text-slate-500 mt-1 font-medium">{selectedAlert.message}</p>
                   </div>
                 </div>
                 <button
                   onClick={() => setSelectedAlert(null)}
-                  className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                  className="p-2 hover:bg-slate-100 rounded-xl transition-colors text-slate-400 hover:text-slate-700 cursor-pointer"
                 >
-                  <X className="w-5 h-5 text-gray-400" />
+                  <X className="w-5 h-5" />
                 </button>
               </div>
 
               {/* Alert Info */}
               <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-white/5 rounded-lg p-4">
-                  <div className="flex items-center gap-2 text-gray-400 text-sm mb-1">
-                    <MapPin className="w-4 h-4" />
+                <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4">
+                  <div className="flex items-center gap-2 text-slate-500 text-xs font-semibold uppercase tracking-wider mb-1">
+                    <MapPin className="w-4 h-4 text-cyan-600" />
                     Location
                   </div>
-                  <div className="text-white font-semibold">{selectedAlert.location}</div>
+                  <div className="text-slate-900 font-bold text-base">{selectedAlert.location}</div>
                 </div>
-                <div className="bg-white/5 rounded-lg p-4">
-                  <div className="flex items-center gap-2 text-gray-400 text-sm mb-1">
-                    <Clock className="w-4 h-4" />
+                <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-4">
+                  <div className="flex items-center gap-2 text-slate-500 text-xs font-semibold uppercase tracking-wider mb-1">
+                    <Clock className="w-4 h-4 text-cyan-600" />
                     Timestamp
                   </div>
-                  <div className="text-white font-semibold">{selectedAlert.timestamp}</div>
+                  <div className="text-slate-900 font-bold text-base">{selectedAlert.timestamp}</div>
                 </div>
               </div>
 
               {/* Detailed Information */}
-              <div className="bg-white/5 rounded-lg p-4 mb-6">
-                <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                  <Info className="w-5 h-5 text-cyan-400" />
-                  Detailed Information
+              <div className="bg-slate-50 border border-slate-200/80 rounded-2xl p-5 mb-6">
+                <h3 className="text-slate-900 font-bold mb-4 flex items-center gap-2 text-sm">
+                  <Info className="w-4 h-4 text-cyan-600" />
+                  Detailed Telemetry Information
                 </h3>
                 <div className="space-y-3">
                   {Object.entries(selectedAlert.details).map(([key, value]) => (
-                    <div key={key} className="flex justify-between items-center">
-                      <span className="text-gray-400 capitalize">
+                    <div key={key} className="flex justify-between items-center text-sm py-1 border-b border-slate-200/60 last:border-none">
+                      <span className="text-slate-500 capitalize font-medium">
                         {key.replace(/([A-Z])/g, ' $1').trim()}:
                       </span>
-                      <span className="text-white font-semibold">{value}</span>
+                      <span className="text-slate-900 font-bold">{value}</span>
                     </div>
                   ))}
                 </div>
@@ -272,14 +292,14 @@ const AlertsView = () => {
                       handleAcknowledge(selectedAlert.id)
                       setSelectedAlert(null)
                     }}
-                    className="flex-1 px-4 py-3 bg-gradient-to-r from-cyan-500 to-blue-500 text-white rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-600 transition-all"
+                    className="flex-1 px-4 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 text-white rounded-xl font-bold hover:from-cyan-700 hover:to-blue-700 transition-all shadow-md shadow-cyan-600/20 cursor-pointer"
                   >
                     Acknowledge Alert
                   </button>
                 )}
                 <button
                   onClick={() => setSelectedAlert(null)}
-                  className="flex-1 px-4 py-3 bg-white/10 text-white rounded-lg font-semibold hover:bg-white/20 transition-all"
+                  className="flex-1 px-4 py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200 rounded-xl font-bold transition-all cursor-pointer"
                 >
                   Close
                 </button>
