@@ -7,7 +7,6 @@ import UserPermissionsView from './views/UserPermissionsView'
 import HeatmapView from './views/HeatmapView'
 import RFIDRegistryView from './views/RFIDRegistryView'
 import SystemSettingsView from './views/SystemSettingsView'
-import MacOSDock from './MacOSDock'
 
 const DashboardController = ({ currentView, setCurrentView, setSelectedZone, onHeatmapClick }) => {
   const [dashboardData, setDashboardData] = useState(null)
@@ -71,13 +70,6 @@ const DashboardController = ({ currentView, setCurrentView, setSelectedZone, onH
           {renderView()}
         </motion.div>
       </AnimatePresence>
-
-      {/* MacOS Dock */}
-      <MacOSDock 
-        currentView={currentView} 
-        setCurrentView={setCurrentView}
-        onHeatmapClick={onHeatmapClick}
-      />
     </div>
   )
 }
